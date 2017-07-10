@@ -1,0 +1,6 @@
+{
+  "application": {
+    "metric-meter": "Meter",
+    "metric-timer": "Timer"
+  }
+}
