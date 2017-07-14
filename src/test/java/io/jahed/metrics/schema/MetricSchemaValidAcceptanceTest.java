@@ -15,7 +15,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
-public class MetricSchemaAcceptanceTest {
+public class MetricSchemaValidAcceptanceTest {
 
     private static final String VALID_SCHEMA_PATH = "/schema/valid-schema.json";
     private static final String VALID_METER_NAME = "application.metric-meter";
