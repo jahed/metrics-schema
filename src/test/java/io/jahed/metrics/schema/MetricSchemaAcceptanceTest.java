@@ -3,6 +3,7 @@ package io.jahed.metrics.schema;
 import com.codahale.metrics.MetricRegistry;
 import io.jahed.metrics.schema.validation.MetricRegistryValidator;
 import io.jahed.metrics.schema.validation.ValidationListener;
+import io.jahed.metrics.schema.validation.ValidationResult;
 import io.jahed.metrics.schema.validation.ValidationResult.Failure;
 import io.jahed.metrics.schema.validation.ValidationResult.Success;
 import org.junit.Test;
@@ -20,6 +21,9 @@ public class MetricSchemaAcceptanceTest {
     private static final String VALID_METER_NAME = "application.metric-meter";
     private static final String VALID_TIMER_NAME = "application.metric-timer";
     private static final String INVALID_METRIC_NAME = "application.doesnt.exist";
+
+    @Mock
+    private ValidationListener<ValidationResult> resultListener;
 
     @Mock
     private ValidationListener<Failure> failureListener;
@@ -116,7 +120,7 @@ public class MetricSchemaAcceptanceTest {
     }
 
     @Test
-    public void shouldNotifyListenersForEveryNewMetric() throws Exception {
+    public void shouldNotifySuccessListenersForEveryNewMetric() throws Exception {
         MetricSchema schema = MetricSchemaFactory.create(VALID_SCHEMA_PATH);
         MetricRegistryValidator validator = new MetricRegistryValidator(schema, registry);
         validator.on(Success.class, successListener);
@@ -127,4 +131,18 @@ public class MetricSchemaAcceptanceTest {
 
         verify(successListener, times(2)).notify(any());
     }
+
+    @Test
+    public void shouldNotifyResultListenersForEveryNewMetric() throws Exception {
+        MetricSchema schema = MetricSchemaFactory.create(VALID_SCHEMA_PATH);
+        MetricRegistryValidator validator = new MetricRegistryValidator(schema, registry);
+        validator.on(ValidationResult.class, resultListener);
+        validator.startValidating();
+
+        registry.meter(VALID_METER_NAME);
+        registry.meter(INVALID_METRIC_NAME);
+
+        verify(resultListener, times(2)).notify(any());
+    }
+
 }
