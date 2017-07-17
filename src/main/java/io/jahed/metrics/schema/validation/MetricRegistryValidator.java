@@ -56,6 +56,7 @@ public class MetricRegistryValidator {
 
     /**
      * Adds a {@link ValidationResult} listener. i.e. a listener for all results, both failures and successes.
+     * Calling this method multiple times will add multiple listeners and will ignore ones already added.
      * @param listener The listener to notify.
      * @return This validator.
      */
@@ -65,6 +66,7 @@ public class MetricRegistryValidator {
 
     /**
      * Adds a {@link ValidationResult.Success} listener. i.e. a listener for all successes.
+     * Calling this method multiple times will add multiple listeners and will ignore ones already added.
      * @param listener The listener to notify.
      * @return This validator.
      */
@@ -74,6 +76,7 @@ public class MetricRegistryValidator {
 
     /**
      * Adds a {@link ValidationResult.Failure} listener. i.e. a listener for all failures.
+     * Calling this method multiple times will add multiple listeners and will ignore ones already added.
      * @param listener The listener to notify.
      * @return This validator.
      */
