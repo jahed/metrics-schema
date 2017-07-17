@@ -28,7 +28,7 @@ Here we're saying that we expect 2 metrics to be used. A `Meter` called `applica
 
 The Metric must be a full canonical name of a class which implements `com.codahale.metrics.Metric`.
 
-Once you've defined your schema, you can use it to validator your `MetricRegistry`.
+Once you've defined your schema, you can use it to validate your `MetricRegistry`.
 
 ```java
 MetricRegistry registry = new MetricRegistry();
