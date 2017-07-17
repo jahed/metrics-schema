@@ -1,6 +1,7 @@
 # Metrics Schema
 
 [![Travis](https://img.shields.io/travis/jahed/metrics-schema.svg)](https://travis-ci.org/jahed/metrics-schema)
+[![Maven Central](https://img.shields.io/maven-central/v/io.jahed/metrics-schema.svg)](https://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22io.jahed%22%20AND%20a%3A%22metrics-schema%22)
 
 Define your [Metrics](https://github.com/dropwizard/metrics) in a JSON file so you can keep track of what you're 
 expecting and what's actually going out.
