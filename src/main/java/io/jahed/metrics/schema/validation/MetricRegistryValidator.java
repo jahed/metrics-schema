@@ -3,9 +3,17 @@ package io.jahed.metrics.schema.validation;
 import com.codahale.metrics.*;
 import com.codahale.metrics.Timer;
 import io.jahed.metrics.schema.MetricSchema;
+import io.jahed.metrics.schema.validation.ValidationResult.Failure;
+import io.jahed.metrics.schema.validation.ValidationResult.Success;
 
 import java.util.*;
 
+/**
+ * A MetricRegistryValidator can listen to a MetricRegistry for registered metrics and validate their name and types
+ * against a {@link MetricSchema}.
+ *
+ * To perform any actions off these validation results, you'll need to add a {@link ValidationListener}.
+ */
 public class MetricRegistryValidator {
 
     private final RegistryListener registryListener;
@@ -22,6 +30,10 @@ public class MetricRegistryValidator {
         this.started = false;
     }
 
+    /**
+     * Starts notifying of validation results.
+     * @return This validator.
+     */
     public MetricRegistryValidator startValidating() {
         if(!started) {
             registry.addListener(registryListener);
@@ -30,6 +42,10 @@ public class MetricRegistryValidator {
         return this;
     }
 
+    /**
+     * Stops notifying of validation results.
+     * @return This validator.
+     */
     public MetricRegistryValidator stopValidating() {
         if(started) {
             registry.removeListener(registryListener);
@@ -38,20 +54,46 @@ public class MetricRegistryValidator {
         return this;
     }
 
-    public <T extends ValidationResult> MetricRegistryValidator on(Class<T> resultType, ValidationListener<T> listener) {
-        Set<ValidationListener> resultListeners = getListenersForResultType(resultType);
-        resultListeners.add(listener);
-        return this;
+    /**
+     * Adds a {@link ValidationResult} listener. i.e. a listener for all results, both failures and successes.
+     * @param listener The listener to notify.
+     * @return This validator.
+     */
+    public MetricRegistryValidator onResult(ValidationListener<ValidationResult> listener) {
+        return on(ValidationResult.class, listener);
     }
 
-    public <T extends ValidationResult> MetricRegistryValidator off(Class<T> resultType, ValidationListener<T> listener) {
-        Set<ValidationListener> resultListeners = getListenersForResultType(resultType);
-        resultListeners.remove(listener);
-        return this;
+    /**
+     * Adds a {@link ValidationResult.Success} listener. i.e. a listener for all successes.
+     * @param listener The listener to notify.
+     * @return This validator.
+     */
+    public MetricRegistryValidator onSuccess(ValidationListener<Success> listener) {
+        return on(Success.class, listener);
     }
 
+    /**
+     * Adds a {@link ValidationResult.Failure} listener. i.e. a listener for all failures.
+     * @param listener The listener to notify.
+     * @return This validator.
+     */
+    public MetricRegistryValidator onFailure(ValidationListener<Failure> listener) {
+        return on(Failure.class, listener);
+    }
+
+    /**
+     * Stops notifying the given listener.
+     * @param listener The listener to stop notifying.
+     * @return This validator.
+     */
     public MetricRegistryValidator off(ValidationListener<?> listener) {
         resultListeners.forEach((key, value) -> value.remove(listener));
+        return this;
+    }
+
+    private <T extends ValidationResult> MetricRegistryValidator on(Class<T> resultType, ValidationListener<T> listener) {
+        Set<ValidationListener> resultListeners = getListenersForResultType(resultType);
+        resultListeners.add(listener);
         return this;
     }
 

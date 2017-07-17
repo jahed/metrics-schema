@@ -3,16 +3,39 @@ package io.jahed.metrics.schema;
 import com.codahale.metrics.Metric;
 import com.github.wnameless.json.flattener.JsonFlattener;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Use this factory to create MetricSchema.
+ */
 public class MetricSchemaFactory {
 
-    public static MetricSchema create(String schemaPath) {
+    /**
+     * Takes a resource path to a MetricSchema JSON. The JSON can look like:
+     * <pre>
+     * {@code
+     * {
+     *     "application": {
+     *         "metric-meter": "com.codahale.metrics.Meter",
+     *         "metric-timer": "com.codahale.metrics.Timer"
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * This will be parsed into a schema with the following names assigned to the given types:
+     * <ul>
+     *     <li>application.metric-meter</li>
+     *     <li>application.metric-timer</li>
+     * </ul>
+     *
+     * @param schemaPath Resource path to the JSON schema.
+     * @return A MetricSchema of the parsed JSON
+     */
+    public static MetricSchema createFromResource(String schemaPath) {
         String schemaJson = getResourceAsString(schemaPath);
         Map<String, Class<? extends Metric>> schemaMap = parseSchema(schemaJson);
         return new MetricSchema(schemaMap);

@@ -22,7 +22,7 @@ public class MetricSchemaInvalidAcceptanceTest {
         exception.expect(MetricSchemaParseException.class);
         exception.expectMessage(String.format("Could not read schema at %s.", NON_EXISTENT_SCHEMA_PATH));
 
-        MetricSchemaFactory.create(NON_EXISTENT_SCHEMA_PATH);
+        MetricSchemaFactory.createFromResource(NON_EXISTENT_SCHEMA_PATH);
     }
 
     @Test
@@ -30,7 +30,7 @@ public class MetricSchemaInvalidAcceptanceTest {
         exception.expect(MetricSchemaParseException.class);
         exception.expectMessage("Could not parse schema as JSON.");
 
-        MetricSchemaFactory.create(NOT_JSON_SCHEMA_PATH);
+        MetricSchemaFactory.createFromResource(NOT_JSON_SCHEMA_PATH);
     }
 
     @Test
@@ -38,7 +38,7 @@ public class MetricSchemaInvalidAcceptanceTest {
         exception.expect(MetricSchemaParseException.class);
         exception.expectMessage("com.example.DoesNotExist does not exist.");
 
-        MetricSchemaFactory.create(UNKNOWN_TYPE_SCHEMA_PATH);
+        MetricSchemaFactory.createFromResource(UNKNOWN_TYPE_SCHEMA_PATH);
     }
 
     @Test
@@ -46,7 +46,7 @@ public class MetricSchemaInvalidAcceptanceTest {
         exception.expect(MetricSchemaParseException.class);
         exception.expectMessage("java.lang.String is not a com.codahale.metrics.Metric.");
 
-        MetricSchemaFactory.create(NON_METRIC_TYPE_SCHEMA_PATH);
+        MetricSchemaFactory.createFromResource(NON_METRIC_TYPE_SCHEMA_PATH);
     }
 
 }

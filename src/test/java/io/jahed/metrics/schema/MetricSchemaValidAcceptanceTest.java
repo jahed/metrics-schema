@@ -35,10 +35,10 @@ public class MetricSchemaValidAcceptanceTest {
 
     @Test
     public void shouldNotifyListenersOfInvalidMetricNames() throws Exception {
-        MetricSchema schema = MetricSchemaFactory.create(VALID_SCHEMA_PATH);
-        MetricRegistryValidator validator = new MetricRegistryValidator(schema, registry);
-        validator.on(Failure.class, failureListener);
-        validator.startValidating();
+        MetricSchema schema = MetricSchemaFactory.createFromResource(VALID_SCHEMA_PATH);
+        new MetricRegistryValidator(schema, registry)
+            .onFailure(failureListener)
+            .startValidating();
 
         registry.meter(INVALID_METRIC_NAME);
 
@@ -47,10 +47,10 @@ public class MetricSchemaValidAcceptanceTest {
 
     @Test
     public void shouldNotifyListenersOfInvalidMetricTypes() throws Exception {
-        MetricSchema schema = MetricSchemaFactory.create(VALID_SCHEMA_PATH);
-        MetricRegistryValidator validator = new MetricRegistryValidator(schema, registry);
-        validator.on(Failure.class, failureListener);
-        validator.startValidating();
+        MetricSchema schema = MetricSchemaFactory.createFromResource(VALID_SCHEMA_PATH);
+        new MetricRegistryValidator(schema, registry)
+            .onFailure(failureListener)
+            .startValidating();
 
         registry.timer(VALID_METER_NAME);
 
@@ -59,11 +59,11 @@ public class MetricSchemaValidAcceptanceTest {
 
     @Test
     public void shouldNotNotifyRemovedListeners() throws Exception {
-        MetricSchema schema = MetricSchemaFactory.create(VALID_SCHEMA_PATH);
-        MetricRegistryValidator validator = new MetricRegistryValidator(schema, registry);
-        validator.on(Failure.class, failureListener);
-        validator.off(failureListener);
-        validator.startValidating();
+        MetricSchema schema = MetricSchemaFactory.createFromResource(VALID_SCHEMA_PATH);
+        new MetricRegistryValidator(schema, registry)
+            .onFailure(failureListener)
+            .off(failureListener)
+            .startValidating();
 
         registry.meter(INVALID_METRIC_NAME);
 
@@ -72,10 +72,10 @@ public class MetricSchemaValidAcceptanceTest {
 
     @Test
     public void shouldNotNotifyFailureListenersOnSuccess() throws Exception {
-        MetricSchema schema = MetricSchemaFactory.create(VALID_SCHEMA_PATH);
-        MetricRegistryValidator validator = new MetricRegistryValidator(schema, registry);
-        validator.on(Failure.class, failureListener);
-        validator.startValidating();
+        MetricSchema schema = MetricSchemaFactory.createFromResource(VALID_SCHEMA_PATH);
+        new MetricRegistryValidator(schema, registry)
+            .onFailure(failureListener)
+            .startValidating();
 
         registry.meter(VALID_METER_NAME);
 
@@ -84,10 +84,10 @@ public class MetricSchemaValidAcceptanceTest {
 
     @Test
     public void shouldNotNotifySuccessListenersOnFailure() throws Exception {
-        MetricSchema schema = MetricSchemaFactory.create(VALID_SCHEMA_PATH);
-        MetricRegistryValidator validator = new MetricRegistryValidator(schema, registry);
-        validator.on(Success.class, successListener);
-        validator.startValidating();
+        MetricSchema schema = MetricSchemaFactory.createFromResource(VALID_SCHEMA_PATH);
+        new MetricRegistryValidator(schema, registry)
+            .onSuccess(successListener)
+            .startValidating();
 
         registry.meter(INVALID_METRIC_NAME);
 
@@ -96,10 +96,11 @@ public class MetricSchemaValidAcceptanceTest {
 
     @Test
     public void shouldNotifySuccessListenersOnSuccess() throws Exception {
-        MetricSchema schema = MetricSchemaFactory.create(VALID_SCHEMA_PATH);
-        MetricRegistryValidator validator = new MetricRegistryValidator(schema, registry);
-        validator.on(Success.class, successListener);
-        validator.startValidating();
+        MetricSchema schema = MetricSchemaFactory.createFromResource(VALID_SCHEMA_PATH);
+
+        new MetricRegistryValidator(schema, registry)
+            .onSuccess(successListener)
+            .startValidating();
 
         registry.meter(VALID_METER_NAME);
 
@@ -108,10 +109,10 @@ public class MetricSchemaValidAcceptanceTest {
 
     @Test
     public void shouldNotNotifyListenersForRepeatedMetrics() throws Exception {
-        MetricSchema schema = MetricSchemaFactory.create(VALID_SCHEMA_PATH);
-        MetricRegistryValidator validator = new MetricRegistryValidator(schema, registry);
-        validator.on(Success.class, successListener);
-        validator.startValidating();
+        MetricSchema schema = MetricSchemaFactory.createFromResource(VALID_SCHEMA_PATH);
+        new MetricRegistryValidator(schema, registry)
+            .onSuccess(successListener)
+            .startValidating();
 
         registry.meter(VALID_METER_NAME);
         registry.meter(VALID_METER_NAME);
@@ -121,10 +122,10 @@ public class MetricSchemaValidAcceptanceTest {
 
     @Test
     public void shouldNotifySuccessListenersForEveryNewMetric() throws Exception {
-        MetricSchema schema = MetricSchemaFactory.create(VALID_SCHEMA_PATH);
-        MetricRegistryValidator validator = new MetricRegistryValidator(schema, registry);
-        validator.on(Success.class, successListener);
-        validator.startValidating();
+        MetricSchema schema = MetricSchemaFactory.createFromResource(VALID_SCHEMA_PATH);
+        new MetricRegistryValidator(schema, registry)
+            .onSuccess(successListener)
+            .startValidating();
 
         registry.meter(VALID_METER_NAME);
         registry.timer(VALID_TIMER_NAME);
@@ -134,10 +135,10 @@ public class MetricSchemaValidAcceptanceTest {
 
     @Test
     public void shouldNotifyResultListenersForEveryNewMetric() throws Exception {
-        MetricSchema schema = MetricSchemaFactory.create(VALID_SCHEMA_PATH);
-        MetricRegistryValidator validator = new MetricRegistryValidator(schema, registry);
-        validator.on(ValidationResult.class, resultListener);
-        validator.startValidating();
+        MetricSchema schema = MetricSchemaFactory.createFromResource(VALID_SCHEMA_PATH);
+        new MetricRegistryValidator(schema, registry)
+            .onResult(resultListener)
+            .startValidating();
 
         registry.meter(VALID_METER_NAME);
         registry.meter(INVALID_METRIC_NAME);
