@@ -1,5 +1,7 @@
 # Metrics Schema
 
+[![Travis](https://img.shields.io/travis/jahed/metrics-schema.svg)](https://travis-ci.org/jahed/metrics-schema)
+
 Define your [Metrics](https://github.com/dropwizard/metrics) in a JSON file so you can keep track of what you're 
 expecting and what's actually going out.
 
