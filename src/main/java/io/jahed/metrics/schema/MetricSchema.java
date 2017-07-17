@@ -10,32 +10,37 @@ import static io.jahed.metrics.schema.validation.ValidationResult.success;
 
 public class MetricSchema {
 
-    private final Map<String, String> schema;
+    private final Map<String, Class<? extends Metric>> schema;
 
-    public MetricSchema(Map<String, String> schema) {
+    public MetricSchema(Map<String, Class<? extends Metric>> schema) {
         this.schema = schema;
     }
 
     public ValidationResult validate(String name, Metric metric) {
-        String expectedClassName = schema.get(name);
+        Class<?> expectedClass = schema.get(name);
 
-        if (expectedClassName == null) {
+        if (expectedClass == null) {
             return failure(String.format(
                 "Unknown metric name: %s",
                 name
             ));
         }
 
-        String className = metric.getClass().getSimpleName();
-
-        if (!className.equals(expectedClassName)) {
+        if (!expectedClass.isInstance(metric)) {
             return failure(String.format(
-                "Metric %s was passed an invalid type %s",
+                "Metric %s was passed an invalid type %s. Expected %s.",
                 name,
-                className
+                metric.getClass().getCanonicalName(),
+                expectedClass.getCanonicalName()
             ));
         }
 
-        return success(String.format("Metric %s of type %s is valid.", name, className));
+        return success(
+            String.format(
+                "Metric %s of type %s is valid.",
+                name,
+                metric.getClass().getCanonicalName()
+            )
+        );
     }
 }

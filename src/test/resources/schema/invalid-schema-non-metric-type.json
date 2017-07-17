@@ -1,0 +1,5 @@
+{
+  "application": {
+    "not-a-metric-meter": "java.lang.String"
+  }
+}

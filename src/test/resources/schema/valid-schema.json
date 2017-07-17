@@ -1,6 +1,6 @@
 {
   "application": {
-    "metric-meter": "Meter",
-    "metric-timer": "Timer"
+    "metric-meter": "com.codahale.metrics.Meter",
+    "metric-timer": "com.codahale.metrics.Timer"
   }
 }
