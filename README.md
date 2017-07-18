@@ -9,7 +9,17 @@ expecting and what's actually going out.
 
 ## Installation
 
-*Maven Central access is pending.*
+### Maven
+
+Add this dependency to your `pom.xml`. Update the `version` to the one you want.
+
+```xml
+<dependency>
+    <groupId>io.jahed</groupId>
+    <artifactId>metrics-schema</artifactId>
+    <version>1.0</version>
+</dependency>
+```
 
 ## Usage
 
